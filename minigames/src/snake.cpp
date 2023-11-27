@@ -12,12 +12,14 @@ Snake::Snake(Board* board, DirectedPosition* position)
     head_directed_position_(position), 
     delete_position_(false) {}
 
+
 Snake::Snake(Board* board) 
   : board_(board), 
     body_size_(1), 
     body_(std::vector<DirectedPosition>(body_size_)),
     head_directed_position_(new DirectedPosition()), 
     delete_position_(true) {}
+
 
 Snake::~Snake() {
   if (delete_position_) {
@@ -61,14 +63,13 @@ bool Snake::CheckCollision() const {
 // TODO: Put an enum here
 // TODO: I have two snake heads
 void Snake::Move(const int& direction) {
-  //std::cout << "is border: " << head_directed_position_->nextPosition() << std::endl;
-  if (CheckFood()) {
+  ChangeDirection(direction);
+  if (CheckCollision()) {
+    board_->gameOver();
+  } if (CheckFood()) {
     Grow();
     board_->generateFood();
-  } else if (CheckCollision()) {
-    board_->gameOver();
   } else {
-    ChangeDirection(direction);
     MoveBody();
   }
 }

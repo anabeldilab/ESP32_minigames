@@ -47,8 +47,8 @@ Square& Board::get_square(const DirectedPosition& kDirectedPosition) {
 
 
 bool Board::isBorder(const DirectedPosition& kDirectedPosition) const {
-  return (kDirectedPosition.get_y() == -1 || kDirectedPosition.get_y() == height_ + 1 || 
-          kDirectedPosition.get_x() == -1 || kDirectedPosition.get_x() == width_ + 1);
+  return (kDirectedPosition.get_y() == -1 || kDirectedPosition.get_y() == height_ || 
+          kDirectedPosition.get_x() == -1 || kDirectedPosition.get_x() == width_);
 }
 
 
@@ -66,13 +66,13 @@ void Board::moveSnake(const int& kDirection) {
 
 
 void Board::generateFood() {
-  int x = rand() % height_;
-  int y = rand() % width_;
-  while (board_[x][y].isSnakeBody()) {
-    x = rand() % height_;
-    y = rand() % width_;
+  int y = rand() % height_;
+  int x = rand() % width_;
+  while (board_[y][x].isSnakeBody()) {
+    y = rand() % height_;
+    x = rand() % width_;
   }
-  board_[x][y].setFood(true);
+  board_[y][x].setFood(true);
 }
 
 

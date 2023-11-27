@@ -1,11 +1,11 @@
 #include <iostream>
 
-class Position;
+class DirectedPosition;
 
 class Square {
  public:
   Square();
-  Square(Position* position);
+  Square(DirectedPosition* position);
 
   ~Square();
 
@@ -20,7 +20,7 @@ class Square {
   friend std::ostream& operator<<(std::ostream& os, const Square& kSquare);
 
  private:
-  Position* position_;
+  DirectedPosition* directed_position_;
   bool food_;
   bool snake_body_;
   bool snake_head_;

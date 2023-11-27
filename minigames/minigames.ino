@@ -13,14 +13,14 @@
 
 #include "heltec.h"
 #include "include/display.h"
-#include "include/position.h"
+#include "include/directedPosition.h"
 #include "include/snake.h"
 #include "include/square.h"
 #include "include/board.h"
 
 Board board(10, 10);
 
-Snake snake(&board, new Position(5, 5));
+Snake snake(&board, new DirectedPosition(5, 5));
 
 void setup() {
   Serial.begin(9600);
@@ -33,9 +33,9 @@ void loop() {
 
   for (int i = 0; i < 10; i++) {
     for (int j = 0; j < 10; j++) {
-      Serial.print(board.get_square(Position(i,j)).isBorder()); 
+      Serial.print(board.isBorder(DirectedPosition(i,j)));
     }
     Serial.println();
-  } 
+  }
   delay(2000);
 }

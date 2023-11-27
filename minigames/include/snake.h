@@ -1,32 +1,39 @@
 #include <iostream>
+#include <vector>
 
 class Board;
-class Position;
+class DirectedPosition;
 
 class Snake {
  public:
   Snake();
-  Snake(Board* board, Position* position);
+  Snake(Board* board, DirectedPosition* position);
   Snake(Board* board);
 
   ~Snake();
 
-  bool isHead(const Position& kPosition) const;
-  bool isBody(const Position& kPosition) const;
+  // TODO: Delete
+  bool get_body_size(void) const;
 
-  bool CheckFood();
-  bool CheckCollision();
+  bool isHead(const DirectedPosition& kPosition) const;
+  bool isBody(const DirectedPosition& kPosition) const;
 
-  friend std::ostream& operator<<(std::ostream& os, const Snake& kSnake);
+  bool CheckFood() const;
+  bool CheckCollision() const;
+
+  void Move(const int& direction);
   
  private:
   Board* board_;
 
   int body_size_;
-  Position** body_;
+  std::vector<DirectedPosition> body_;
 
-  Position* head_position_;
-  Position* next_head_position_;
+  DirectedPosition* head_directed_position_;
 
   bool delete_position_;
+
+  void Grow();
+  void ChangeDirection(const int& direction);
+  void MoveBody();
 };

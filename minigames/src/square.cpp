@@ -1,16 +1,16 @@
 #include "../include/square.h"
-#include "../include/position.h"
+#include "../include/directedPosition.h"
 
 Square::Square() 
-  : position_(nullptr), 
+  : directed_position_(nullptr), 
     food_(false), 
     snake_body_(false), 
     snake_head_(false), 
     delete_position_(true) {}
 
 
-Square::Square(Position* position) 
-  : position_(position), 
+Square::Square(DirectedPosition* position) 
+  : directed_position_(position), 
     food_(false), 
     snake_body_(false), 
     snake_head_(false), 
@@ -19,7 +19,7 @@ Square::Square(Position* position)
 
 Square::~Square() {
   if (delete_position_)
-    delete position_;
+    delete directed_position_;
 }
 
 

@@ -1,6 +1,6 @@
 #include "../include/board.h"
 #include "../include/snake.h"
-#include "../include/position.h"
+#include "../include/directedPosition.h"
 #include "../include/square.h"
 
 Board::Board() : width_(0), height_(0), 
@@ -13,13 +13,8 @@ Board::Board(const int& kHeight, const int& kWidth)
   snake_(new Snake(this)) {
   for (int i = 0; i < kHeight; i++) {
     for (int j = 0; j < kWidth; j++) {
-      board_[i][j] = Square(new Position(i, j));
-      if (snake_->isHead(Position(i,j))) {
-        board_[i][j].setSnakeHead(true);
-        board_[i][j].setSnakeBody(true);
-      } else if (snake_->isBody(Position(i,j))) {
-        board_[i][j].setSnakeBody(true);
-      }
+      board_[i][j] = Square(new DirectedPosition(i, j));
+      changeSnakeSquare(DirectedPosition(i, j));
     }
   }
 
@@ -46,14 +41,45 @@ Snake* Board::get_snake(void) const {
 }
 
 
-Square& Board::get_square(const Position& kPosition) {
-  return board_[kPosition.get_x()][kPosition.get_y()];
+Square& Board::get_square(const DirectedPosition& kDirectedPosition) {
+  return board_[kDirectedPosition.get_y()][kDirectedPosition.get_x()];
 }
 
 
-bool Board::isBorder(const Position& kPosition) const {
-  return (kPosition.get_x() == 0 || kPosition.get_x() == height_ + 1 || 
-          kPosition.get_y() == 0 || kPosition.get_y() == width_ + 1);
+bool Board::isBorder(const DirectedPosition& kDirectedPosition) const {
+  return (kDirectedPosition.get_y() == -1 || kDirectedPosition.get_y() == height_ + 1 || 
+          kDirectedPosition.get_x() == -1 || kDirectedPosition.get_x() == width_ + 1);
+}
+
+
+// TODO: Put an enum here
+void Board::turnGame(const int& kDirection) {
+  moveSnake(kDirection);
+  changeSnakeSquare();
+}
+
+
+// TODO finish this
+void Board::moveSnake(const int& kDirection) {
+  snake_->Move(kDirection);
+}
+
+
+void Board::generateFood() {
+  int x = rand() % height_;
+  int y = rand() % width_;
+  while (board_[x][y].isSnakeBody()) {
+    x = rand() % height_;
+    y = rand() % width_;
+  }
+  board_[x][y].setFood(true);
+}
+
+
+// TODO finish this
+void Board::gameOver() {
+  std::cout << "Game Over" << std::endl;
+  exit(0);
 }
 
 
@@ -86,4 +112,42 @@ std::ostream& operator<<(std::ostream& os, const Board& kBoard) {
     os << std::endl;
   }
   return os;
+}
+
+
+void Board::changeSnakeSquare() {
+  for (int i = 0; i < height_; i++) {
+    for (int j = 0; j < width_; j++) {
+      board_[i][j].setSnakeHead(false);
+      board_[i][j].setSnakeBody(false);
+      if (snake_->isHead(DirectedPosition(i, j))) {
+        board_[i][j].setSnakeHead(true);
+        board_[i][j].setSnakeBody(true);
+      }
+      else if (snake_->isBody(DirectedPosition(i, j))) {
+        board_[i][j].setSnakeBody(true);
+      }
+    }
+  }
+}
+
+
+void Board::clean() {
+  for (int i = 0; i < height_; i++) {
+    for (int j = 0; j < width_; j++) {
+      board_[i][j].setSnakeHead(false);
+      board_[i][j].setSnakeBody(false);
+    }
+  }
+}
+
+
+void Board::changeSnakeSquare(const DirectedPosition& kDirectedPosition) {
+  if (snake_->isHead(kDirectedPosition)) {
+    board_[kDirectedPosition.get_y()][kDirectedPosition.get_x()].setSnakeHead(true);
+    board_[kDirectedPosition.get_y()][kDirectedPosition.get_x()].setSnakeBody(true);
+  }
+  else if (snake_->isBody(kDirectedPosition)) {
+    board_[kDirectedPosition.get_y()][kDirectedPosition.get_x()].setSnakeBody(true);
+  }
 }

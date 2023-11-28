@@ -43,7 +43,7 @@ bool Snake::isBody(const DirectedPosition& kPosition) const {
 }
 
 
-bool Snake::CheckFood() const {
+bool Snake::checkFood() const {
   if (board_->get_square(head_directed_position_->nextPosition()).isFood()) {
     return true;
   }
@@ -51,7 +51,7 @@ bool Snake::CheckFood() const {
 }
 
 
-bool Snake::CheckCollision() const {
+bool Snake::checkCollision() const {
   if (board_->isBorder(head_directed_position_->nextPosition()) 
       || isBody(head_directed_position_->nextPosition())) {
     return true;
@@ -61,33 +61,26 @@ bool Snake::CheckCollision() const {
 
 
 // TODO: Put an enum here
-// TODO: I have two snake heads
-void Snake::Move(const int& direction) {
-  ChangeDirection(direction);
-  if (CheckCollision()) {
+void Snake::move(const int& direction) {
+  changeDirection(direction);
+  if (checkCollision()) {
     board_->gameOver();
-  } if (CheckFood()) {
-    Grow();
+  } if (checkFood()) {
+    board_->consumeFood(head_directed_position_->nextPosition());
+    grow();
     board_->generateFood();
-  } else {
-    MoveBody();
   }
+  moveBody();
 }
 
 
-// TODO snake can't grow if it's on the border
-void Snake::Grow() {
-  if (body_size_ == 1) {
-    body_.push_back(*head_directed_position_);
-  } else {
-    body_.push_back(body_[body_size_ - 1]);
-  } 
+void Snake::grow() {
   body_size_++;
-  body_.push_back(body_[body_size_ - 2]);
+  body_.push_back(body_.back());
 }
 
 
-void Snake::ChangeDirection(const int& direction) {
+void Snake::changeDirection(const int& direction) {
   if (direction == Up) {
     head_directed_position_->turnDirection(Up);
   } else if (direction == Down) {
@@ -100,14 +93,19 @@ void Snake::ChangeDirection(const int& direction) {
 
 }
 
-// TODO: revision
-void Snake::MoveBody() {
-  DirectedPosition temp = *head_directed_position_;
+
+void Snake::moveBody() {
+  moveHead();
+  DirectedPosition bodySegmentPositionUpdate = *head_directed_position_;
   for (int i = 0; i < body_size_; i++) {
-    DirectedPosition temp2 = body_[i];
-    body_[i] = temp;
-    temp = temp2;
+    DirectedPosition bodySegmentPositionBeforeUpdate = body_[i];
+    body_[i] = bodySegmentPositionUpdate;
+    bodySegmentPositionUpdate = bodySegmentPositionBeforeUpdate;
   }
+}
+
+
+void Snake::moveHead() {
   head_directed_position_->turnDirection(head_directed_position_->get_direction());
   head_directed_position_->set_x(head_directed_position_->nextPosition().get_x());
   head_directed_position_->set_y(head_directed_position_->nextPosition().get_y());

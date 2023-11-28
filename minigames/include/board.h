@@ -23,6 +23,7 @@ class Board {
 
   void moveSnake(const int& kDirection);
   void generateFood();
+  void consumeFood(const DirectedPosition& kDirectedPosition);
   void gameOver();
 
   const std::vector<Square> &operator[](const int &kIndex) const;

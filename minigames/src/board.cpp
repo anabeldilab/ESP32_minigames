@@ -11,13 +11,14 @@ Board::Board(const int& kHeight, const int& kWidth)
   : width_(kWidth), height_(kHeight), 
   board_(std::vector<std::vector<Square>>(kHeight, std::vector<Square>(kWidth))), 
   snake_(new Snake(this)) {
+  srand(time(0));
   for (int i = 0; i < kHeight; i++) {
     for (int j = 0; j < kWidth; j++) {
       board_[i][j] = Square(new DirectedPosition(i, j));
       changeSnakeSquare(DirectedPosition(i, j));
     }
   }
-
+  generateFood();
 }
 
 
@@ -61,7 +62,12 @@ void Board::turnGame(const int& kDirection) {
 
 // TODO finish this
 void Board::moveSnake(const int& kDirection) {
-  snake_->Move(kDirection);
+  snake_->move(kDirection);
+}
+
+
+void Board::consumeFood(const DirectedPosition& kDirectedPosition) {
+  board_[kDirectedPosition.get_y()][kDirectedPosition.get_x()].setFood(false);
 }
 
 

@@ -18,10 +18,10 @@ class Snake {
   bool isHead(const DirectedPosition& kPosition) const;
   bool isBody(const DirectedPosition& kPosition) const;
 
-  bool CheckFood() const;
-  bool CheckCollision() const;
+  bool checkFood() const;
+  bool checkCollision() const;
 
-  void Move(const int& direction);
+  void move(const int& direction);
   
  private:
   Board* board_;
@@ -33,7 +33,8 @@ class Snake {
 
   bool delete_position_;
 
-  void Grow();
-  void ChangeDirection(const int& direction);
-  void MoveBody();
+  void grow();
+  void changeDirection(const int& direction);
+  void moveBody();
+  void moveHead();
 };

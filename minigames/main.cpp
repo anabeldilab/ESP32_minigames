@@ -11,6 +11,11 @@
   * g++ main.cpp src/board.cpp src/display.cpp src/directedPosition.cpp src/snake.cpp src/square.cpp -o bin/minigame
   * ./bin/minigame
 */
+#include <iostream>
+#include <termios.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <sys/select.h>
 
 #include "include/display.h"
 #include "include/directedPosition.h"
@@ -18,20 +23,48 @@
 #include "include/square.h"
 #include "include/board.h"
 
+// Function to configure the terminal in non-canonical mode
+void enableRawMode() {
+  struct termios raw;
+  tcgetattr(STDIN_FILENO, &raw);
+  raw.c_lflag &= ~(ECHO | ICANON);
+  tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
+}
+
+
+// Function to check if key press is available
+bool keyPressed() {
+    struct timeval tv = {0L, 0L};
+    fd_set fds;
+    FD_SET(STDIN_FILENO, &fds);
+    return select(1, &fds, NULL, NULL, &tv) > 0;
+}
+
+
 int main(int argc, char** argv) {
+  enableRawMode();
   Board board(5, 10);
+  int direction = 3; // Default direction
 
   std::cout << board << std::endl;
 
   while(true) {
-    //Up, Down, Left, Right
-    std::cout << "Snake Size: " << board.get_snake()->get_body_size() << std::endl;
-    std::cout << "Direction: Up = 0, Down = 1, Left = 2, Right = 3" << std::endl;
-    std::cout << "Enter a direction: ";
-    int direction;
-    std::cin >> direction;
+    if (keyPressed()) {
+      char c;
+      read(STDIN_FILENO, &c, 1);
+      switch(c) {
+        case 'w': direction = 0; break; // Up
+        case 's': direction = 1; break; // Down
+        case 'a': direction = 2; break; // Left
+        case 'd': direction = 3; break; // Right
+        case 'q': return 0;            // Quit
+        default: break;                // Keep current direction
+      }
+    }
+
     board.turnGame(direction);
     std::cout << board << std::endl;
+    usleep(500000);
   }
 
   return 0;

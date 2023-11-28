@@ -10,7 +10,7 @@
         "${workspaceFolder}/minigames/main.cpp",
         "${workspaceFolder}/minigames/src/*.cpp",
         "-o",
-        "${workspaceFolder}/minigames//bin/${fileBasenameNoExtension}",
+        "${workspaceFolder}/minigames/bin/minigame",
       ],
       "options": {
         "cwd": "${fileDirname}"

@@ -1,14 +1,13 @@
-#include <iostream>
-#include <vector>
-
 class Snake;
 class DirectedPosition;
 class Square;
+template <typename T> class Vector;
+//class DisplayManager;
 
 class Board {
  public:
   Board();
-  Board(const int& kWidth, const int& kHeight);
+  Board(const int& kHeight, const int& kWeight);
 
   ~Board();
 
@@ -26,20 +25,20 @@ class Board {
   void consumeFood(const DirectedPosition& kDirectedPosition);
   void gameOver();
 
-  const std::vector<Square> &operator[](const int &kIndex) const;
-  std::vector<Square> &operator[](const int &kIndex);
+  const Vector<Square> &operator[](const int &kIndex) const;
+  Vector<Square> &operator[](const int &kIndex);
 
   friend std::ostream &operator<<(std::ostream &os, const Board &kBoard);
-
-private:
+  //friend void displayBoard(DisplayManager& manager, const Board& board);
+  
+ private:
   int width_;
   int height_;
 
-  std::vector<std::vector<Square>> board_;
+  Vector<Vector<Square>>* board_;
 
   Snake *snake_;
 
-  // TODO: revision
   void changeSnakeSquare();
   void changeSnakeSquare(const DirectedPosition& kDirectedPosition);
   void clean();

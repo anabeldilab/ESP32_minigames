@@ -8,7 +8,7 @@
   * @brief This code contains the implementation of different minigames, such as snake or tetris. 
   *       The user can choose which game to play. 
   * 
-  * g++ main.cpp src/board.cpp src/display.cpp src/directedPosition.cpp src/snake.cpp src/square.cpp -o bin/minigame
+  * g++ main.cpp src/board.cpp src/displayManager.cpp src/directedPosition.cpp src/snake.cpp src/square.cpp -o bin/minigame
   * ./bin/minigame
 */
 #include <iostream>
@@ -17,11 +17,11 @@
 #include <stdio.h>
 #include <sys/select.h>
 
-#include "include/display.h"
 #include "include/directedPosition.h"
 #include "include/snake.h"
 #include "include/square.h"
 #include "include/board.h"
+
 
 // Function to configure the terminal in non-canonical mode
 void enableRawMode() {
@@ -43,12 +43,13 @@ bool keyPressed() {
 
 int main(int argc, char** argv) {
   enableRawMode();
-  Board board(5, 10);
+  Board board(40, 30);
   int direction = 3; // Default direction
 
   std::cout << board << std::endl;
 
   while(true) {
+    std::cout << "\033[2J\033[1;1H"; // Clear screen
     if (keyPressed()) {
       char c;
       read(STDIN_FILENO, &c, 1);
@@ -64,8 +65,7 @@ int main(int argc, char** argv) {
 
     board.turnGame(direction);
     std::cout << board << std::endl;
-    usleep(500000);
+    usleep(100000);
   }
-
   return 0;
 }

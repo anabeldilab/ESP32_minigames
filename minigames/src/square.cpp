@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "../include/square.h"
 #include "../include/directedPosition.h"
 

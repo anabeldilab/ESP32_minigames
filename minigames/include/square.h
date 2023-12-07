@@ -1,5 +1,3 @@
-#include <iostream>
-
 class DirectedPosition;
 
 class Square {

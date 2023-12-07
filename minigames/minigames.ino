@@ -5,37 +5,46 @@
   *
   * @author Anabel Díaz Labrador <alu0101206011@ull.edu.es>
   * @date 20 Nov 2023
-  * @brief This code contains the implementation of different minigames, such as snake or tetris. 
-  *       The user can choose which game to play. 
+  * @brief This code contains the implementation of different minigames, such as snake
+  * 
   * 
   *
 */
 
+#include "Arduino.h"
 #include "heltec.h"
-#include "include/display.h"
+
+#include "include/displayManager.h"
 #include "include/directedPosition.h"
 #include "include/snake.h"
 #include "include/square.h"
 #include "include/board.h"
 
-Board board(10, 10);
+void drawBorder(int x, int y) {
+  if (x == 0 || y == 0 || y == DISPLAY_HEIGHT - 1 || x == DISPLAY_WIDTH - 1 ||
+      x == 1 || y == 1 || y == DISPLAY_HEIGHT - 2 || x == DISPLAY_WIDTH - 2) {
+    if ((x + y) % 2 == 0) {
+      Heltec.display->setPixel(x, y);
+    }
+  }
+}
 
-Snake snake(&board, new DirectedPosition(5, 5));
+Board board(30, 30);
+DisplayManager displayManager(Heltec.display);
 
 void setup() {
-  Serial.begin(9600);
-  //std::cout << board << std::endl;
-  Serial.println("Hola1");
+  Serial.begin(115200);
+	Heltec.begin(true /*DisplayEnable Enable*/, false /*LoRa Disable*/, true /*Serial Enable*/);
+  Heltec.display->clear();
+  Heltec.display->display();
 }
 
 void loop() {
-  Serial.println("Hola");
-
-  for (int i = 0; i < 10; i++) {
-    for (int j = 0; j < 10; j++) {
-      Serial.print(board.isBorder(DirectedPosition(i,j)));
-    }
-    Serial.println();
-  }
-  delay(2000);
+  displayBoard(displayManager, board);
+  //displayManager.drawPixel(DirectedPosition(2, 2));
+  //Square(DirectedPosition(2, 2)); // this is the error
+  //DirectedPosition kPosition(2, 2);
+  //Heltec.display->setPixel(2, 2);
+  //Heltec.display->display();
+  delay(200);
 }

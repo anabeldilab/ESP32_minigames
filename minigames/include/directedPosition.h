@@ -1,5 +1,3 @@
-#include <iostream>
-
 enum Direction {Up, Down, Left, Right};
 
 class DirectedPosition {

@@ -48,7 +48,6 @@ int main(int argc, char** argv) {
   std::cout << board << std::endl;
 
   while(true) {
-    std::cout << "\033[2J\033[1;1H"; // Clear screen
     if (keyPressed()) {
       char c;
       read(STDIN_FILENO, &c, 1);

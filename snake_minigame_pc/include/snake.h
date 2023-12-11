@@ -9,7 +9,6 @@ class Snake {
 
   ~Snake();
 
-  // TODO: Delete
   bool get_body_size(void) const;
 
   bool isHead(const DirectedPosition& kPosition) const;

@@ -1,0 +1,25 @@
+\section{Version 2: Snake en ESP32 con C++ y Arduino IDE}
+
+Esta versión del juego Snake, implementada en el microcontrolador ESP32 utilizando C++ y Arduino IDE, representa un esfuerzo inicial para explorar la flexibilidad y eficiencia de códigos modulares en plataformas de sistemas embebidos. Esta versión se centra en la legibilidad y la facilidad de modificación del código, aprovechando las capacidades de C++ y la estructura modular proporcionada por las clases dichas anteriormente.
+
+Se ha añadido lo siguiente:
+
+\begin{itemize}
+  \item \textbf{Directorio libraries:} Creada automaticamente por Arduino IDE, contiene las librerías utilizadas en el proyecto.
+  \item \textbf{Fichero minigames.ino:} Contiene el código principal del juego, incluyendo la configuración de la pantalla OLED y la inicialización de los objetos.
+\end{itemize}
+
+\subsection{Rendimiento y Desafíos Encontrados}
+
+Aunque esta versión cumple con los objetivos básicos del juego, se identificaron varios desafíos y limitaciones durante su desarrollo y prueba:
+
+\begin{itemize}
+    \item \textbf{Uso de Memoria:} Aunque en principio no parece que la memoria sea un problema, cuando se intentaba ejecutar el juego en el ESP32, más especificamente, se intentaba acceder a una casilla por primera vez, el programa se reiniciaba. Se probó con diferentes tamaños de tablero, pero el problema persistía. Esto sugiere que la matriz no era el problema, sino que a lo mejor lo fue la pila de llamadas, ya que para dibujar cada casilla en la OLED se necesitaba pasar por varios objetos en cadena.
+    \item \textbf{Escalabilidad:} A pesar de la modularidad del código, la escalabilidad del juego para incorporar características adicionales es totalmente limitada debido a la gestión de memoria y rendimiento.
+\end{itemize}
+
+
+
+\subsection{Conclusiones y Lecciones Aprendidas}
+
+Esta primera versión del juego Snake en ESP32 ha sido instrumental para comprender las capacidades y limitaciones del ESP32 en el contexto de programación modular. Las lecciones aprendidas de esta implementación proporcionan una base sólida para futuras mejoras y optimizaciones, destacando la importancia de una gestión de memoria más eficiente y la necesidad de estrategias de optimización del rendimiento en sistemas embebidos.

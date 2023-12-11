@@ -1,0 +1,86 @@
+
+\section{Version 3: Snake en ESP32 simplificado}
+
+La segunda versión del juego Snake presenta una estructura simplificada, manteniendo la separación de la lógica del juego en distintos directorios como \texttt{src} e \texttt{include}, pero con una organización y un enfoque más eficientes.
+
+\textbf{Simplificación de la Estructura:} Se ha eliminado gran parte de la escalabilidad y la modularidad del código para centrarse en la eficiencia y la estabilidad, lo que ha permitido una reducción significativa del uso de memoria. Basicamente se han eliminado todas las clases, y se ha pasado a utilizar dos ficheros .cpp y .h, uno para el funcionamiento del juego y otro para la serpiente.
+
+\subsection{Estructura del Código}
+
+La nueva estructura del código se muestra a continuación:
+
+\begin{itemize}
+    \item \textbf{Archivo Principal snake\_game.ino:} Este archivo sirve como punto de entrada del juego. Contiene la configuración inicial del microcontrolador ESP32 y la lógica principal para la ejecución del juego.
+    
+    \item \textbf{Directorio include/:} Contiene los archivos de cabecera, que definen las clases y las funciones utilizadas en el juego.
+    \begin{itemize}
+        \item \texttt{game.h:} Define las funciones que tienen que ver con el juego.
+        \item \texttt{images.h:} Contiene definiciones de los bitmaps que representan logos y simbolos dibujados en bits.
+        \item \texttt{snake.h:} Define las funciones que tienen que ver con la serpiente. Gestiona el comportamiento y el estado de la serpiente dentro del juego.
+    \end{itemize}
+    
+    \item \textbf{Directorio src/:} Alberga los archivos de código fuente, donde se implementan las definiciones proporcionadas en los archivos de cabecera.
+    \begin{itemize}
+        \item \texttt{game.cpp:} Implementa la lógica de la clase Game, incluyendo el ciclo principal del juego y la gestión de eventos.
+        \item \texttt{snake.cpp:} Contiene la implementación de la clase Snake, incluyendo la lógica de movimiento y crecimiento de la serpiente.
+    \end{itemize}
+    
+    \item \textbf{Directorio libraries/:} Este directorio se utiliza para almacenar las bibliotecas de terceros o personalizadas que se utilizan en el proyecto, lo que puede incluir herramientas para la gestión de la pantalla OLED, la conectividad o el manejo de gráficos.
+\end{itemize}
+
+La organización de los archivos en esta estructura modular facilita el mantenimiento y la escalabilidad del código. Permite una separación clara entre la lógica del juego, la definición de las entidades y la implementación de funcionalidades específicas, lo que resulta en un código más limpio y fácil de entender.
+
+
+\begin{itemize}
+    \item \textbf{Directorio src:} Contiene los ficheros .cpp del juego. Dónde se implementan las funciones.
+    \item \textbf{Directorio include:} Contiene los ficheros .h del juego. Dónde se declaran las funciones y variables.
+    \item \textbf{Fichero minigame.ino:} Contiene el código principal del juego, incluyendo la configuración de la pantalla OLED y la inicialización de los objetos.
+
+\subsection{Rendimiento y Eficiencia}
+
+La revisión de la estructura del código ha tenido un impacto positivo en el rendimiento general del juego:
+
+\begin{itemize}
+    \item \textbf{Reducción del Uso de Memoria:} La nueva versión utiliza la memoria de manera más eficiente, lo que es crucial para el funcionamiento estable en el microcontrolador ESP32.
+    \item \textbf{Estabilidad Mejorada:} Se observó una mejora significativa en la estabilidad durante las pruebas de juego extendidas, evidenciando la eficacia de las optimizaciones realizadas.
+    \item \textbf{Escalabilidad:} La estructura simplificada y modular facilita la incorporación de nuevas características y la adaptación a diferentes plataformas o configuraciones de hardware.
+    \item \textbf{Capacidad de testeo:} La modularidad del código permite una mayor facilidad de testeo, al disponer diferentes directorios y estructura dividida en declaración/implementación dada por el .h .cpp.
+\end{itemize}
+
+En la siguiente figura se muestra el juego en funcionamiento en la ESP32, con una pantalla OLED de 128x64 píxeles \ref{figure:snakeV2} y \ref{figure:snakeV2-1}.
+
+\begin{figure}[!htb]
+  \centering
+   \includgraphics[width=0.6\linewidth]{figures/snakeV2.jpg}
+  \caption{Versión del juego Snake para ESP32}
+  \label{figure:snakeV2}
+\end{figure}
+
+\begin{figure}[!htb]
+  \centering
+   \includgraphics[width=0.6\linewidth]{figures/snakeV2.jpg}
+  \caption{Versión del juego Snake para ESP32}
+  \label{figure:snakeV2-1}
+\end{figure}
+
+El resultado de los bitmaps se puede ver en la figura \ref{figure:death} y \ref{figure:start}.
+
+\begin{figure}[!htb]
+  \centering
+   \includgraphics[width=0.6\linewidth]{figures/death.jpg}
+  \caption{Bitmap de la muerte cuando se pierde en el juego}
+  \label{figure:death}
+\end{figure}
+
+\begin{figure}[!htb]
+  \centering
+   \includgraphics[width=0.6\linewidth]{figures/start.jpg}
+  \caption{Bitmap para comenzar el juego}
+  \label{figure:start}
+\end{figure}
+
+\subsection{Conclusiones y Perspectivas Futuras}
+
+La segunda versión del juego Snake demuestra que las mejoras en la estructura del código y la integración eficiente de bibliotecas pueden tener un impacto sustancial en el rendimiento y la escalabilidad. Esta versión sirve como un ejemplo valioso de cómo la optimización y la simplificación pueden mejorar significativamente la viabilidad de proyectos de sistemas embebidos en plataformas como el ESP32.
+
+Las lecciones aprendidas y las metodologías aplicadas en esta versión ofrecen una perspectiva valiosa para futuros proyectos que buscan equilibrar la eficiencia de recursos con la funcionalidad y la estabilidad en sistemas embebidos.

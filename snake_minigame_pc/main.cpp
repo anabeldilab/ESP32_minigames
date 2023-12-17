@@ -8,10 +8,11 @@
   * @brief This code contains the implementation of different minigames, such as snake or tetris. 
   *       The user can choose which game to play. 
   * 
-  * g++ main.cpp src/board.cpp src/directedPosition.cpp src/snake.cpp -o bin/minigame
+  * g++ main.cpp src/board.cpp src/directedPosition.cpp src/snake.cpp src/square.cpp -o bin/minigame
   * ./bin/minigame
 */
 #include <iostream>
+#include <vector>
 #include <termios.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -20,6 +21,7 @@
 #include "include/directedPosition.h"
 #include "include/snake.h"
 #include "include/board.h"
+#include "include/square.h"
 
 
 // Function to configure the terminal in non-canonical mode

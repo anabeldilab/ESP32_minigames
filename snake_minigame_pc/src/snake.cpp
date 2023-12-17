@@ -4,13 +4,12 @@
 #include "../include/snake.h"
 #include "../include/directedPosition.h"
 #include "../include/board.h"
-#include "../include/vector.h"
-
+#include "../include/square.h"
 
 Snake::Snake(Board* board, DirectedPosition* position) 
   : board_(board), 
     body_size_(1), 
-    body_(new Vector<DirectedPosition>(body_size_)),
+    body_(std::vector<DirectedPosition>(body_size_, *position)),
     head_directed_position_(position), 
     delete_position_(false) {}
 
@@ -18,7 +17,7 @@ Snake::Snake(Board* board, DirectedPosition* position)
 Snake::Snake(Board* board) 
   : board_(board), 
     body_size_(1), 
-    body_(new Vector<DirectedPosition>(body_size_)),
+    body_(std::vector<DirectedPosition>(body_size_)),
     head_directed_position_(new DirectedPosition()), 
     delete_position_(true) {}
 
@@ -37,7 +36,7 @@ bool Snake::isHead(const DirectedPosition& kPosition) const {
 
 bool Snake::isBody(const DirectedPosition& kPosition) const {
   for (int i = 0; i < body_size_; i++) {
-    if ((*body_)[i] == kPosition) {  
+    if (body_[i] == kPosition) {  
       return true;
     }
   }
@@ -46,7 +45,7 @@ bool Snake::isBody(const DirectedPosition& kPosition) const {
 
 
 bool Snake::checkFood() const {
-  if (board_->get_square(head_directed_position_->nextPosition()) == Board::Food) {
+  if (board_->get_square(head_directed_position_->nextPosition()).isFood()) {
     return true;
   }
   return false;
@@ -94,7 +93,7 @@ bool Snake::oppositeDirection(const int& direction) {
 
 void Snake::grow() {
   body_size_++;
-  body_->push_back(body_->back());
+  body_.push_back(body_.back());
 }
 
 
@@ -116,8 +115,8 @@ void Snake::moveBody() {
   moveHead();
   DirectedPosition bodySegmentPositionUpdate = *head_directed_position_;
   for (int i = 0; i < body_size_; i++) {
-    DirectedPosition bodySegmentPositionBeforeUpdate = (*body_)[i];
-    (*body_)[i] = bodySegmentPositionUpdate;
+    DirectedPosition bodySegmentPositionBeforeUpdate = body_[i];
+    body_[i] = bodySegmentPositionUpdate;
     bodySegmentPositionUpdate = bodySegmentPositionBeforeUpdate;
   }
 }

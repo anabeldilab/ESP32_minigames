@@ -1,6 +1,5 @@
 class Board;
 class DirectedPosition;
-template <typename T> class Vector;
 
 class Snake {
  public:
@@ -23,7 +22,7 @@ class Snake {
   Board* board_;
 
   int body_size_;
-  Vector<DirectedPosition>* body_;
+  std::vector<DirectedPosition> body_;
 
   DirectedPosition* head_directed_position_;
 
